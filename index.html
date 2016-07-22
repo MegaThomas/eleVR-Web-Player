@@ -58,9 +58,9 @@
     * chosen: 1e-5 doesn't fix the problem.
     */
     if (abs(direction.x) < 1e-4 * abs(direction.z))
-    theta = 0.5*PI * (1.0 - sign(-1.0 * direction.z));
+      theta = 0.5*PI * (1.0 - sign(-1.0 * direction.z));
     if (abs(direction.y) < 1e-4 * length(direction.xz))
-    phi = 0.0;
+      phi = 0.0;
 
     // Uncomment to debug the transformations.
     // return vec4(theta / (2. * PI) + 0.5, phi / (2. * PI) + 0.5, 0., 0.);
@@ -143,8 +143,9 @@
           <a id="mute" class="fa fa-volume-up icon" title="Mute"></a>
 
           <a id="recenter" class="fa fa-dot-circle-o icon" title="Recenter"></a>
-
           <a id="select-local-file" class="fa fa-folder-open icon rfloat" title="Select File"></a>
+
+          
 
           <select id="projection-select" class="rfloat">
             <option value=0>Equirectangular</option>
@@ -156,9 +157,14 @@
             <option value="0therelaxatron.webm">The Relaxatron (webm)</option>
             <option value="1Vidcon5.mp4">Vidcon (mp4)</option>
             <option value="1Vidcon.webm">Vidcon (webm)</option>
+            <option value="0car_2k_grid.mp4">car 2k grid (mp4)</option>
+            <option value="0car_2k.mp4">car 2K (mp4)</option>
           </select>
 
           <a id="full-screen" class="fa fa-expand icon rfloat" title="Full Screen"></a>
+
+          <b id="$$$" class="rfloat">info</b>
+          
         </div>
 
         <script>runEleVRPlayer();</script>

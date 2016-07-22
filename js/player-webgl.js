@@ -100,7 +100,9 @@ var vrHMD, vrSensor;
       for (i = 0; i < this.params.uniforms.length; i++) {
         var uniformName = this.params.uniforms[i];
         this.uniforms[uniformName] = webGL.gl.getUniformLocation(this.program, uniformName);
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         webGL.gl.enableVertexAttribArray(this.attributes[uniformName]);
+        // webGL.gl.enableVertexAttribArray(this.uniforms[uniformName]);
       }
     },
 
@@ -146,7 +148,7 @@ var vrHMD, vrSensor;
     /**
      * Drawing the scene
      */
-     drawOneEye: function(eye, projectionMatrix) {
+    drawOneEye: function(eye, projectionMatrix) {
       webGL.gl.useProgram(shader.program);
 
       webGL.gl.bindBuffer(webGL.gl.ARRAY_BUFFER, positionsBuffer);
@@ -177,6 +179,7 @@ var vrHMD, vrSensor;
         }
         mat4.fromQuat(rotation, totalRotation);
       } else {
+///////////////////////////       *********         EXEC HERE          ********             //////////////////////////////////////
         quat.multiply(totalRotation, manualRotation, webGL.getPhoneVR().rotationQuat());
         mat4.fromQuat(rotation, totalRotation);
       }
@@ -237,6 +240,7 @@ var vrHMD, vrSensor;
         perspectiveMatrix = util.mat4PerspectiveFromVRFieldOfView(rightParams.recommendedFieldOfView, 0.1, 10);
         webGL.drawOneEye(1, perspectiveMatrix);
       } else {
+/////////////////////               *******         EXEC HERE              *************           //////////////////////////
         var ratio = (canvas.width/2)/canvas.height;
         mat4.perspective(perspectiveMatrix, Math.PI/2, ratio, 0.1, 10);
         webGL.drawOneEye(0, perspectiveMatrix);

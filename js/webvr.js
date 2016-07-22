@@ -4,7 +4,9 @@
   var webVR = {
 
     initWebVR: function() {
+
       if (navigator.getVRDevices) {
+        alert("getvr");
         navigator.getVRDevices().then(webVR.vrDeviceCallback);
       }
     },
@@ -29,7 +31,6 @@
           break;
         }
       }
-
       if (!vrSensor) {
         alert("Found an HMD, but didn't find its orientation sensor?");
       }

@@ -87,7 +87,7 @@ a:active {
 	right: 0;
   padding: 0 10px;
   opacity: .9;
-  height: 30px;
+  /*height: 30px;*/
   background-color: rgb(237,25,88);
 
   background: -webkit-linear-gradient(left top, rgb(190,25,141), rgb(237,25,88));

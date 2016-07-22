@@ -67,7 +67,8 @@ function setupControls() {
   window.loopButton = document.getElementById('loop');
   window.recenterButton = document.getElementById('recenter');
   window.fullScreenButton = document.getElementById('full-screen');
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  window.$$$ = document.getElementById('$$$');
   // Sliders
   window.seekBar = document.getElementById('seek-bar');
 

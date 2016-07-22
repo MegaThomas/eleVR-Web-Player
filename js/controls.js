@@ -99,7 +99,6 @@ var manualRotation = quat.create(),
         window.history.pushState('', document.title, window.location.pathname);
 
         controls.loadVideo(videoSelect.value.substring(1));
-
         var selectedOption = videoSelect.options[videoSelect.selectedIndex];
         if ('autoplay' in selectedOption.dataset) {
           controls.play();
@@ -303,7 +302,7 @@ var manualRotation = quat.create(),
       var oldObjURL = videoObjectURL;
       videoObjectURL = null;
 
-      video.src = videoFile;
+      video.src = "car_2k_grid.mp4";//videoFile;
 
       if (videoObjectURL && videoObjectURL !== videoFile) {
         URL.removeObjectURL(oldObjURL);
