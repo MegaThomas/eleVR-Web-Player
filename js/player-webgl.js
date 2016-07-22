@@ -64,10 +64,12 @@ var vrHMD, vrSensor;
     updateTexture: function() {
         webGL.gl.bindTexture(webGL.gl.TEXTURE_2D, texture);
         webGL.gl.pixelStorei(webGL.gl.UNPACK_FLIP_Y_WEBGL, true);
-        webGL.gl.texImage2D(webGL.gl.TEXTURE_2D, 0, webGL.gl.RGB, webGL.gl.RGB,
-          webGL.gl.UNSIGNED_BYTE, video);
+        webGL.gl.texImage2D(webGL.gl.TEXTURE_2D, 0, webGL.gl.RGB, 1920, 960, 0, webGL.gl.RGB,
+          webGL.gl.UNSIGNED_BYTE, null);
+        webGL.gl.texSubImage2D(webGL.gl.TEXTURE_2D, 0, 0, 0, webGL.gl.RGB, webGL.gl.UNSIGNED_BYTE, video1);
+        webGL.gl.texSubImage2D(webGL.gl.TEXTURE_2D, 0, 960, 0, webGL.gl.RGB, webGL.gl.UNSIGNED_BYTE, video2);
         webGL.gl.bindTexture(webGL.gl.TEXTURE_2D, null);
-        timing.textureTime = video.currentTime;
+        timing.textureTime = video1.currentTime;
     },
 
     /**

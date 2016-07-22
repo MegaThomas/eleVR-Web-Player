@@ -57,8 +57,9 @@ function setupControls() {
   window.leftPlay = document.getElementById('left-play');
   window.rightPlay = document.getElementById('right-play');
   window.canvas = document.getElementById('glcanvas');
-  window.video = document.getElementById('video');
-
+  window.video1 = document.getElementById('video1');
+  window.video2 = document.getElementById('video2');
+  video2.muted = true;
   // Buttons
   window.playButton = document.getElementById('play-pause');
   window.playL = document.getElementById('play-l');
@@ -118,8 +119,10 @@ function runEleVRPlayer() {
     webGL.initBuffers();
     webGL.initTextures();
 
-    window.video.addEventListener('canplaythrough', controls.loaded);
-    window.video.addEventListener('ended', controls.ended);
+    window.video1.addEventListener('canplaythrough', controls.loaded);
+    window.video1.addEventListener('ended', controls.ended);
+    window.video2.addEventListener('canplaythrough', controls.loaded);
+    window.video2.addEventListener('ended', controls.ended);
 
     // Keep a record of all the videos that are in the drop-down menu.
     Array.prototype.slice.call(window.videoSelect.options).forEach(function(option) {
@@ -176,7 +179,8 @@ function initFromSettings(newSettings) {
   controls.setLooping(settings.loop);
 
   if (settings.video) {
-    window.video.innerHTML = '';
+    window.video1.innerHTML = '';
+    window.video2.innerHTML = '';
 
     if (window.videoSelect) {
       var optionValue = settings.projection + settings.video;
@@ -210,7 +214,8 @@ function initFromSettings(newSettings) {
     controls.play();
   } else if (settings.autoplay === false) {
     // If user did not explicitly set `autoplay`, don't pause unnecessarily.
-    window.video.pause();
+    window.video1.pause();
+    window.video2.pause();
   }
 }
 

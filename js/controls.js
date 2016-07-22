@@ -40,7 +40,7 @@ var manualRotation = quat.create(),
       });
 
       muteButton.addEventListener('click', function() {
-        if (video.muted === false) {
+        if (video1.muted === false) {
           controls.mute();
         } else {
           controls.unmute();
@@ -62,16 +62,28 @@ var manualRotation = quat.create(),
 
       seekBar.addEventListener('change', function() {
         // Calculate the new time
-        var time = video.duration * (seekBar.value / 100);
-        video.currentTime = time;
+        var time1 = video1.duration * (seekBar.value / 100);
+        var time2 = video2.duration * (seekBar.value / 100);
+        video1.currentTime = time1;
+        video2.currentTime = time2;
       });
 
-      video.addEventListener('timeupdate', function() {
+      video1.addEventListener('timeupdate', function() {
         // don't update if paused,
         // we get last time update after seekBar mousedown pauses
-        if (!video.paused) {
+        if (!video1.paused) {
           // Calculate the slider value
-          var value = (100 / video.duration) * video.currentTime;
+          var value = (100 / video1.duration) * video1.currentTime;
+          seekBar.value = value;
+        }
+      });
+
+      video2.addEventListener('timeupdate', function() {
+        // don't update if paused,
+        // we get last time update after seekBar mousedown pauses
+        if (!video2.paused) {
+          // Calculate the slider value
+          var value = (100 / video2.duration) * video2.currentTime;
           seekBar.value = value;
         }
       });
@@ -79,15 +91,22 @@ var manualRotation = quat.create(),
       // Pause the video when the slider handle is being dragged
       var tempPause = false;
       seekBar.addEventListener('mousedown', function() {
-        if (!video.paused) {
-          video.pause();
+        if (!video1.paused) {
+          video1.pause();
+          tempPause = true;
+        }
+        if (!video2.paused) {
+          video2.pause();
           tempPause = true;
         }
       });
 
       seekBar.addEventListener('mouseup', function() {
         if (tempPause) {
-          video.play();
+          video1.play();
+        }
+        if (tempPause) {
+          video2.play();
         }
       });
 
@@ -168,19 +187,24 @@ var manualRotation = quat.create(),
     loaded: function() {
       window.leftLoad.classList.add('hidden');
       window.rightLoad.classList.add('hidden');
-      if (video.paused) {
+      if (video1.paused) {
         window.leftPlay.classList.remove('hidden');
         window.rightPlay.classList.remove('hidden');
       }
     },
 
     play: function() {
-      if (video.ended) {
-        video.currentTime = 0.1;
+      if (video1.ended) {
+        video1.currentTime = 0.1;
       }
 
-      video.play();
-      if (!video.paused) { // In case somehow hitting play button doesn't work.
+      if (video2.ended) {
+        video2.currentTime = 0.1;
+      }
+
+      video1.play();
+      video2.play();
+      if (!video1.paused) { // In case somehow hitting play button doesn't work.
         window.leftPlay.classList.add('hidden');
         window.rightPlay.classList.add('hidden');
 
@@ -194,8 +218,8 @@ var manualRotation = quat.create(),
     },
 
     pause: function() {
-      video.pause();
-
+      video1.pause();
+      video2.pause();
       window.playButton.className = 'fa fa-play icon';
       window.playButton.title = 'Play';
 
@@ -204,7 +228,7 @@ var manualRotation = quat.create(),
     },
 
     playPause: function() {
-      if (video.paused === true) {
+      if (video1.paused === true) {
         controls.play();
       } else {
         controls.pause();
@@ -213,20 +237,29 @@ var manualRotation = quat.create(),
 
     setLooping: function(loop) {
       loop = !!loop;
-      if (video.loop !== loop) {
+      if (video1.loop !== loop) {
         controls.toggleLooping();
       }
     },
 
     toggleLooping: function() {
-      if (video.loop === true) {
+      if (video1.loop === true) {
         loopButton.className = 'fa fa-refresh icon';
         loopButton.title = 'Start Looping';
-        video.loop = false;
+        video1.loop = false;
       } else {
         loopButton.className = 'fa fa-chain-broken icon';
         loopButton.title = 'Stop Looping';
-        video.loop = true;
+        video1.loop = true;
+      }
+      if (video2.loop === true) {
+        loopButton.className = 'fa fa-refresh icon';
+        loopButton.title = 'Start Looping';
+        video2.loop = false;
+      } else {
+        loopButton.className = 'fa fa-chain-broken icon';
+        loopButton.title = 'Stop Looping';
+        video2.loop = true;
       }
     },
 
@@ -239,19 +272,19 @@ var manualRotation = quat.create(),
     },
 
     mute: function() {
-      if (video.muted) {
+      if (video1.muted) {
         return;
       }
-      video.muted = true;
+      video1.muted = true;
       window.muteButton.className = 'fa fa-volume-off icon';
       window.muteButton.title = 'Unmute';
     },
 
     unmute: function() {
-      if (!video.muted) {
+      if (!video1.muted) {
         return;
       }
-      video.muted = false;
+      video1.muted = false;
       window.muteButton.className = 'fa fa-volume-up icon';
       window.muteButton.title = 'Mute';
     },
@@ -302,7 +335,8 @@ var manualRotation = quat.create(),
       var oldObjURL = videoObjectURL;
       videoObjectURL = null;
 
-      video.src = "car_2k_grid.mp4";//videoFile;
+      video1.src = "car_2k_left.mp4";//videoFile;
+      video1.src = "car_2k_right.mp4";
 
       if (videoObjectURL && videoObjectURL !== videoFile) {
         URL.removeObjectURL(oldObjURL);
