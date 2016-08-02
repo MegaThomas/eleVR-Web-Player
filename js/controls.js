@@ -293,16 +293,27 @@ var manualRotation = quat.create(),
       }
 
       // Hack to fix rotation for vidcon video for vidcon
-      if (videoFile === 'videos/Vidcon.webm' || videoFile === 'videos/Vidcon5.mp4') {
+      if (videoFile === 'Vidcon.webm' || videoFile === 'Vidcon5.mp4') {
         manualRotation = [0.38175851106643677, -0.7102527618408203, -0.2401944249868393, 0.5404701232910156];
+      } else if (-1 !== videoFile.toLowerCase().indexOf('manifest')) {
+        // MPEG-DASH
+        // console.log('***************************************************************'+video.src);
+        // video.src = videoFile;
+        // console.log('***************************************************************'+video.src);
+        // video.type = 'application/dash+xml';
+        dashPlayer.reset();
+        dashPlayer.attachView(video);
+        dashPlayer.attachSource(videoFile);
+        // console.log('***************************************************************'+video.src);
+        // dashPlayer.attachSource(videoFile);
       } else {
+        video.type = 'video/mp4';
+        video.src = videoFile;
         manualRotation = quat.create();
       }
 
       var oldObjURL = videoObjectURL;
       videoObjectURL = null;
-
-      video.src = "car_2k_grid.mp4";//videoFile;
 
       if (videoObjectURL && videoObjectURL !== videoFile) {
         URL.removeObjectURL(oldObjURL);
