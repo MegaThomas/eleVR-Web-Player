@@ -297,15 +297,8 @@ var manualRotation = quat.create(),
         manualRotation = [0.38175851106643677, -0.7102527618408203, -0.2401944249868393, 0.5404701232910156];
       } else if (-1 !== videoFile.toLowerCase().indexOf('manifest')) {
         // MPEG-DASH
-        // console.log('***************************************************************'+video.src);
-        // video.src = videoFile;
-        // console.log('***************************************************************'+video.src);
-        // video.type = 'application/dash+xml';
-        dashPlayer.reset();
-        dashPlayer.attachView(video);
         dashPlayer.attachSource(videoFile);
-        // console.log('***************************************************************'+video.src);
-        // dashPlayer.attachSource(videoFile);
+        manualRotation = quat.create();
       } else {
         video.type = 'video/mp4';
         video.src = videoFile;
