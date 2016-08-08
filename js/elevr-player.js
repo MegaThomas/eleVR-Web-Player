@@ -60,7 +60,7 @@ function setupControls() {
   window.video = document.getElementById('video');
   // window.dashPlayer = dashjs.MediaPlayerFactory.create(video);
   window.source = document.createElement("source");
-  source.src = "http://dash.edgesuite.net/envivio/EnvivioDash3/manifest.mpd";
+  source.src = "/dash/dolphin.mpd";
   source.type = "application/dash+xml";
   window.dashPlayer = dashjs.MediaPlayerFactory.create(video, source);
 

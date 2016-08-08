@@ -295,7 +295,7 @@ var manualRotation = quat.create(),
       // Hack to fix rotation for vidcon video for vidcon
       if (videoFile === 'Vidcon.webm' || videoFile === 'Vidcon5.mp4') {
         manualRotation = [0.38175851106643677, -0.7102527618408203, -0.2401944249868393, 0.5404701232910156];
-      } else if (-1 !== videoFile.toLowerCase().indexOf('manifest')) {
+      } else if (-1 !== videoFile.toLowerCase().indexOf('mpd')) {
         // MPEG-DASH
         dashPlayer.attachSource(videoFile);
         manualRotation = quat.create();
