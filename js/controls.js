@@ -40,7 +40,7 @@ var manualRotation = quat.create(),
       });
 
       muteButton.addEventListener('click', function() {
-        if (video1.muted === false) {
+        if (video.muted === false) {
           controls.mute();
         } else {
           controls.unmute();
@@ -62,28 +62,28 @@ var manualRotation = quat.create(),
 
       seekBar.addEventListener('change', function() {
         // Calculate the new time
-        var time1 = video1.duration * (seekBar.value / 100);
-        var time2 = video2.duration * (seekBar.value / 100);
-        video1.currentTime = time1;
-        video2.currentTime = time2;
+        var time1 = video.duration * (seekBar.value / 100);
+        var time2 = videos.duration * (seekBar.value / 100);
+        video.currentTime = time1;
+        videos.currentTime = time2;
       });
 
-      video1.addEventListener('timeupdate', function() {
+      video.addEventListener('timeupdate', function() {
         // don't update if paused,
         // we get last time update after seekBar mousedown pauses
-        if (!video1.paused) {
+        if (!video.paused) {
           // Calculate the slider value
-          var value = (100 / video1.duration) * video1.currentTime;
+          var value = (100 / video.duration) * video.currentTime;
           seekBar.value = value;
         }
       });
 
-      video2.addEventListener('timeupdate', function() {
+      videos.addEventListener('timeupdate', function() {
         // don't update if paused,
         // we get last time update after seekBar mousedown pauses
-        if (!video2.paused) {
+        if (!videos.paused) {
           // Calculate the slider value
-          var value = (100 / video2.duration) * video2.currentTime;
+          var value = (100 / videos.duration) * videos.currentTime;
           seekBar.value = value;
         }
       });
@@ -91,22 +91,22 @@ var manualRotation = quat.create(),
       // Pause the video when the slider handle is being dragged
       var tempPause = false;
       seekBar.addEventListener('mousedown', function() {
-        if (!video1.paused) {
-          video1.pause();
+        if (!video.paused) {
+          video.pause();
           tempPause = true;
         }
-        if (!video2.paused) {
-          video2.pause();
+        if (!videos.paused) {
+          videos.pause();
           tempPause = true;
         }
       });
 
       seekBar.addEventListener('mouseup', function() {
         if (tempPause) {
-          video1.play();
+          video.play();
         }
         if (tempPause) {
-          video2.play();
+          videos.play();
         }
       });
 
@@ -187,24 +187,24 @@ var manualRotation = quat.create(),
     loaded: function() {
       window.leftLoad.classList.add('hidden');
       window.rightLoad.classList.add('hidden');
-      if (video1.paused) {
+      if (video.paused) {
         window.leftPlay.classList.remove('hidden');
         window.rightPlay.classList.remove('hidden');
       }
     },
 
     play: function() {
-      if (video1.ended) {
-        video1.currentTime = 0.1;
+      if (video.ended) {
+        video.currentTime = 0.1;
       }
 
-      if (video2.ended) {
-        video2.currentTime = 0.1;
+      if (videos.ended) {
+        videos.currentTime = 0.1;
       }
 
-      video1.play();
-      video2.play();
-      if (!video1.paused) { // In case somehow hitting play button doesn't work.
+      video.play();
+      videos.play();
+      if (!video.paused) { // In case somehow hitting play button doesn't work.
         window.leftPlay.classList.add('hidden');
         window.rightPlay.classList.add('hidden');
 
@@ -218,8 +218,8 @@ var manualRotation = quat.create(),
     },
 
     pause: function() {
-      video1.pause();
-      video2.pause();
+      video.pause();
+      videos.pause();
       window.playButton.className = 'fa fa-play icon';
       window.playButton.title = 'Play';
 
@@ -228,7 +228,7 @@ var manualRotation = quat.create(),
     },
 
     playPause: function() {
-      if (video1.paused === true) {
+      if (video.paused === true) {
         controls.play();
       } else {
         controls.pause();
@@ -237,29 +237,29 @@ var manualRotation = quat.create(),
 
     setLooping: function(loop) {
       loop = !!loop;
-      if (video1.loop !== loop) {
+      if (videos.loop !== loop) {
         controls.toggleLooping();
       }
     },
 
     toggleLooping: function() {
-      if (video1.loop === true) {
+      if (video.loop === true) {
         loopButton.className = 'fa fa-refresh icon';
         loopButton.title = 'Start Looping';
-        video1.loop = false;
+        video.loop = false;
       } else {
         loopButton.className = 'fa fa-chain-broken icon';
         loopButton.title = 'Stop Looping';
-        video1.loop = true;
+        video.loop = true;
       }
-      if (video2.loop === true) {
+      if (videos.loop === true) {
         loopButton.className = 'fa fa-refresh icon';
         loopButton.title = 'Start Looping';
-        video2.loop = false;
+        videos.loop = false;
       } else {
         loopButton.className = 'fa fa-chain-broken icon';
         loopButton.title = 'Stop Looping';
-        video2.loop = true;
+        videos.loop = true;
       }
     },
 
@@ -272,19 +272,19 @@ var manualRotation = quat.create(),
     },
 
     mute: function() {
-      if (video1.muted) {
+      if (video.muted) {
         return;
       }
-      video1.muted = true;
+      video.muted = true;
       window.muteButton.className = 'fa fa-volume-off icon';
       window.muteButton.title = 'Unmute';
     },
 
     unmute: function() {
-      if (!video1.muted) {
+      if (!videos.muted) {
         return;
       }
-      video1.muted = false;
+      videos.muted = false;
       window.muteButton.className = 'fa fa-volume-up icon';
       window.muteButton.title = 'Mute';
     },
@@ -335,8 +335,8 @@ var manualRotation = quat.create(),
       var oldObjURL = videoObjectURL;
       videoObjectURL = null;
 
-      video1.src = "car_2k_left.mp4";//videoFile;
-      video1.src = "car_2k_right.mp4";
+      video.src = "car_2k_left.mp4";//videoFile;
+      videos.src = "car_2k_right.mp4";
 
       if (videoObjectURL && videoObjectURL !== videoFile) {
         URL.removeObjectURL(oldObjURL);

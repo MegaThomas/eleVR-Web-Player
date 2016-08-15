@@ -57,9 +57,50 @@ function setupControls() {
   window.leftPlay = document.getElementById('left-play');
   window.rightPlay = document.getElementById('right-play');
   window.canvas = document.getElementById('glcanvas');
-  window.video1 = document.getElementById('video1');
-  window.video2 = document.getElementById('video2');
-  video2.muted = true;
+  window.video = document.getElementById('video');
+  window.videos = document.createElement("video");
+  document.body.appendChild(videos);
+  videos.src = "car_2k_right.mp4";
+  videos.setAttribute('class', 'hidden');
+  videos.muted = true;
+  var mimeCodec = 'video/mp4; codecs="avc1.64001F, mp4a.40.2"';
+  var assetURL = 'car_left_frag.mp4';
+  if ('MediaSource' in window && MediaSource.isTypeSupported(mimeCodec)) {
+    var mediaSource = new MediaSource;
+    console.log(mediaSource.readyState); // closed
+    video.src = URL.createObjectURL(mediaSource);
+    console.log(video.src);
+    mediaSource.addEventListener('sourceopen', sourceOpen);
+  } else {
+    console.error('Unsupported MIME type or codec: ', mimeCodec);
+  }
+
+  function sourceOpen (_) {
+    console.log(this.readyState); // open
+    var mediaSource = this;
+    console.log(this.readyState);
+    var sourceBuffer = mediaSource.addSourceBuffer(mimeCodec);
+    fetchAB(assetURL, function (buf) {
+      sourceBuffer.addEventListener('updateend', function (_) {
+        mediaSource.endOfStream();
+        // video.play();
+        console.log(mediaSource.readyState); // ended
+      });
+      sourceBuffer.appendBuffer(buf);
+    });
+  };
+
+  function fetchAB (url, cb) {
+    console.log(url);
+    var xhr = new XMLHttpRequest;
+    xhr.open('get', url);
+    xhr.responseType = 'arraybuffer';
+    xhr.onload = function () {
+      cb(xhr.response);
+    };
+    xhr.send();
+  };
+
   // Buttons
   window.playButton = document.getElementById('play-pause');
   window.playL = document.getElementById('play-l');
@@ -119,10 +160,10 @@ function runEleVRPlayer() {
     webGL.initBuffers();
     webGL.initTextures();
 
-    window.video1.addEventListener('canplaythrough', controls.loaded);
-    window.video1.addEventListener('ended', controls.ended);
-    window.video2.addEventListener('canplaythrough', controls.loaded);
-    window.video2.addEventListener('ended', controls.ended);
+    window.video.addEventListener('canplaythrough', controls.loaded);
+    window.video.addEventListener('ended', controls.ended);
+    window.videos.addEventListener('canplaythrough', controls.loaded);
+    window.videos.addEventListener('ended', controls.ended);
 
     // Keep a record of all the videos that are in the drop-down menu.
     Array.prototype.slice.call(window.videoSelect.options).forEach(function(option) {
@@ -179,8 +220,8 @@ function initFromSettings(newSettings) {
   controls.setLooping(settings.loop);
 
   if (settings.video) {
-    window.video1.innerHTML = '';
-    window.video2.innerHTML = '';
+    window.video.innerHTML = '';
+    window.videos.innerHTML = '';
 
     if (window.videoSelect) {
       var optionValue = settings.projection + settings.video;
@@ -214,8 +255,8 @@ function initFromSettings(newSettings) {
     controls.play();
   } else if (settings.autoplay === false) {
     // If user did not explicitly set `autoplay`, don't pause unnecessarily.
-    window.video1.pause();
-    window.video2.pause();
+    window.video.pause();
+    window.videos.pause();
   }
 }
 

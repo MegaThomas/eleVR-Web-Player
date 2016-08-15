@@ -127,11 +127,8 @@
     <canvas id="glcanvas">
       Your browser doesn't appear to support the HTML5 <code>&lt;canvas&gt;</code> element.
     </canvas>
-    <video class="hidden" preload="auto" id="video1" loop="true" webkit-playsinline crossOrigin="anonymous">
-      <source src="car_2k_left.mp4" type="video/mp4">
-    </video>
-    <video class="hidden" preload="auto" id="video2" loop="true" webkit-playsinline crossOrigin="anonymous">
-      <source src="car_2k_right.mp4" type="video/mp4">
+    <video class="hidden" id="video" controls>
+      <!-- <source src="car_2k_left.mp4" type="video/mp4"> -->
     </video>
         <!-- Video Controls -->
         <div id="video-controls" class="hidden">
@@ -171,5 +168,4 @@
 
         <script>runEleVRPlayer();</script>
       </div>
-
     </body></html>

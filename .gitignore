@@ -3,3 +3,8 @@
 *.orig
 *.webm
 .jshintrc
+/dash
+/samples
+/dist
+.gitignore
+*.exe
