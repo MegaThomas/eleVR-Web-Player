@@ -64,10 +64,17 @@ var vrHMD, vrSensor;
     updateTexture: function() {
         webGL.gl.bindTexture(webGL.gl.TEXTURE_2D, texture);
         webGL.gl.pixelStorei(webGL.gl.UNPACK_FLIP_Y_WEBGL, true);
-        webGL.gl.texImage2D(webGL.gl.TEXTURE_2D, 0, webGL.gl.RGB, 1920, 960, 0, webGL.gl.RGB,
+        webGL.gl.texImage2D(webGL.gl.TEXTURE_2D, 0, webGL.gl.RGB, videoSize[0], videoSize[1], 0, webGL.gl.RGB,
           webGL.gl.UNSIGNED_BYTE, null);
-        webGL.gl.texSubImage2D(webGL.gl.TEXTURE_2D, 0, 0, 0, webGL.gl.RGB, webGL.gl.UNSIGNED_BYTE, video);
-        webGL.gl.texSubImage2D(webGL.gl.TEXTURE_2D, 0, 960, 0, webGL.gl.RGB, webGL.gl.UNSIGNED_BYTE, videos);
+        tempCanvas.getContext("2d").drawImage(video, 0, 0, videoSize[0]/2, videoSize[1]);
+        // var t1 = video.currentTime;
+        tempCanvas.getContext("2d").drawImage(videos, videoSize[0]/2, 0, videoSize[0]/2, videoSize[1]);
+        // console.log((videos.currentTime - t1)*1000);
+        webGL.gl.texImage2D(webGL.gl.TEXTURE_2D, 0, webGL.gl.RGBA, webGL.gl.RGBA, webGL.gl.UNSIGNED_BYTE, tempCanvas);
+        // webGL.gl.texSubImage2D(webGL.gl.TEXTURE_2D, 0, 0, 0, webGL.gl.RGB, webGL.gl.UNSIGNED_BYTE, video);
+        // var t1 = video.currentTime;
+        // webGL.gl.texSubImage2D(webGL.gl.TEXTURE_2D, 0, 1280, 0, webGL.gl.RGB, webGL.gl.UNSIGNED_BYTE, videos);
+        // console.log((videos.currentTime - t1)*1000);
         webGL.gl.bindTexture(webGL.gl.TEXTURE_2D, null);
         timing.textureTime = videos.currentTime;
     },

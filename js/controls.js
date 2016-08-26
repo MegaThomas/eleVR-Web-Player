@@ -202,6 +202,9 @@ var manualRotation = quat.create(),
         videos.currentTime = 0.1;
       }
 
+      window.videoSize = [2*video.videoWidth, video.videoHeight];
+      tempCanvas.width = videoSize[0];
+      tempCanvas.height = videoSize[1];
       video.play();
       videos.play();
       if (!video.paused) { // In case somehow hitting play button doesn't work.
@@ -264,7 +267,8 @@ var manualRotation = quat.create(),
     },
 
     ended: function() {
-      controls.pause();
+      this.pause();
+      this.currentTime = 0;
       if (reqAnimFrameID) {
         cancelAnimationFrame(reqAnimFrameID);
         reqAnimFrameID = 0;

@@ -57,41 +57,53 @@ function setupControls() {
   window.leftPlay = document.getElementById('left-play');
   window.rightPlay = document.getElementById('right-play');
   window.canvas = document.getElementById('glcanvas');
-  window.video = document.getElementById('video');
+  // two halves
+  window.video = document.createElement('video');
   window.videos = document.createElement("video");
-  document.body.appendChild(videos);
-  videos.src = "car_2k_right.mp4";
+  // videos.src = "car_right_frag.mp4";
+  video.setAttribute('class', 'hidden');
   videos.setAttribute('class', 'hidden');
+  document.body.appendChild(video);
+  document.body.appendChild(videos);
   videos.muted = true;
+  // two MediaSource
+  // use Bento4/mp4info to get Codec info
+  window.tempCanvas = document.createElement("canvas");
   var mimeCodec = 'video/mp4; codecs="avc1.64001F, mp4a.40.2"';
-  var assetURL = 'car_left_frag.mp4';
+  var assetURL = ["car_left_frag.mp4", "car_right_frag.mp4"];
   if ('MediaSource' in window && MediaSource.isTypeSupported(mimeCodec)) {
-    var mediaSource = new MediaSource;
+    /*var mediaSource = new MediaSource;
     console.log(mediaSource.readyState); // closed
     video.src = URL.createObjectURL(mediaSource);
     console.log(video.src);
-    mediaSource.addEventListener('sourceopen', sourceOpen);
+    mediaSource.addEventListener('sourceopen', sourceOpen);*/
+    window.mediaSource = [];
+    for (var i = 0; i < 2; i++) {
+      mediaSource.push(new MediaSource);
+      console.log("Setup", mediaSource[i].readyState); // closed
+      mediaSource[i].addEventListener('sourceopen', sourceOpen.bind(mediaSource[i], assetURL[i]));
+    };
+    video.src = URL.createObjectURL(mediaSource[0]);
+    videos.src = URL.createObjectURL(mediaSource[1]);
   } else {
     console.error('Unsupported MIME type or codec: ', mimeCodec);
   }
 
-  function sourceOpen (_) {
-    console.log(this.readyState); // open
-    var mediaSource = this;
-    console.log(this.readyState);
-    var sourceBuffer = mediaSource.addSourceBuffer(mimeCodec);
-    fetchAB(assetURL, function (buf) {
+  function sourceOpen (URL) {
+    console.log("SourceOpen", this.readyState); // open
+    var ms = this;
+    var sourceBuffer = ms.addSourceBuffer(mimeCodec);
+    fetchAB(URL, function (buf) {
       sourceBuffer.addEventListener('updateend', function (_) {
-        mediaSource.endOfStream();
+        ms.endOfStream();
         // video.play();
-        console.log(mediaSource.readyState); // ended
+        console.log(ms.readyState); // ended
       });
       sourceBuffer.appendBuffer(buf);
     });
   };
 
   function fetchAB (url, cb) {
-    console.log(url);
     var xhr = new XMLHttpRequest;
     xhr.open('get', url);
     xhr.responseType = 'arraybuffer';
